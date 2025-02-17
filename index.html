@@ -1,0 +1,702 @@
+<!DOCTYPE html>
+<html lang="ar">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>منتديات البرمجة وأخبار البرمجة</title>
+  <style>
+    /* مظهر مظلم مع الكتابة الخضراء */
+    body {
+      font-family: 'Courier New', Courier, monospace;
+      background-color: #000000;
+      color: #00FF00;
+      margin: 0;
+      padding: 20px;
+      direction: rtl; /* لضبط النص من اليمين لليسار */
+    }
+
+    h1, h2, p {
+      color: #00FF00;
+      text-align: center;
+    }
+
+    pre {
+      background-color: #1c1c1c;
+      padding: 20px;
+      border-radius: 5px;
+      margin: 20px 0;
+      overflow-x: auto;
+      color: #00FF00;
+      font-size: 1.2em;
+      word-wrap: break-word;
+      white-space: pre-wrap;
+    }
+
+    code {
+      font-size: 1.2em;
+      color: #00FF00;
+    }
+
+    table {
+      width: 100%;
+      border-collapse: collapse;
+      margin-top: 30px;
+      text-align: center;
+    }
+
+    table, th, td {
+      border: 1px solid #00FF00;
+    }
+
+    th, td {
+      padding: 10px;
+      color: #00FF00;
+    }
+
+    th {
+      background-color: #1c1c1c;
+    }
+
+    .button {
+      padding: 10px 20px;
+      background-color: #00FF00;
+      color: #000000;
+      font-size: 1.2em;
+      border: none;
+      border-radius: 5px;
+      cursor: pointer;
+      transition: 0.3s ease;
+    }
+
+    .button:hover {
+      background-color: #00CC00;
+    }
+
+    .news-container {
+      margin-top: 30px;
+      font-size: 1.1em;
+      background-color: #1c1c1c;
+      padding: 10px;
+      border-radius: 5px;
+      color: #00FF00;
+      overflow: hidden;
+      white-space: nowrap;
+      box-sizing: border-box;
+    }
+
+    .news-container p {
+      display: inline-block;
+      animation: scroll-left 20s linear infinite;
+    }
+
+    @keyframes scroll-left {
+      0% {
+        transform: translateX(100%);
+      }
+      100% {
+        transform: translateX(-100%);
+      }
+    }
+
+    .link-section {
+      text-align: center;
+      margin-top: 40px;
+    }
+
+    a {
+      color: #00FF00;
+      text-decoration: none;
+      font-size: 1.2em;
+      margin: 0 15px;
+    }
+
+    a:hover {
+      text-decoration: underline;
+    }
+
+    .search-container {
+      text-align: center;
+      margin-top: 20px;
+    }
+
+    .search-box {
+      padding: 10px;
+      font-size: 1.2em;
+      width: 70%;
+      margin-right: 15px;
+    }
+
+    .search-button {
+      padding: 10px 20px;
+      background-color: #00FF00;
+      color: #000000;
+      font-size: 1.2em;
+      border: none;
+      border-radius: 5px;
+      cursor: pointer;
+      transition: 0.3s ease;
+    }
+
+    .search-button:hover {
+      background-color: #00CC00;
+    }
+
+    .message-box {
+      margin-top: 30px;
+      padding: 20px;
+      background-color: #1c1c1c;
+      color: #00FF00;
+      border-radius: 5px;
+    }
+
+  </style>
+</head>
+<body>
+
+  <h1>منتديات البرمجة - بايثون، HTML، JavaScript، C#</h1>
+  <h2>جلب البيانات من المنتديات واختيارات الأسئلة</h2>
+
+  <!-- مربع البحث في جوجل -->
+  <div class="search-container">
+    <input type="text" class="search-box" id="searchQuery" placeholder="ابحث عن مشاكل البرمجة...">
+    <button class="search-button" onclick="searchGoogle()">ابحث في جوجل</button>
+  </div>
+
+  <!-- عرض الرسائل التفاعلية -->
+  <div class="message-box" id="messageBox" style="display: none;">
+    <p>لقد تم إرسال السؤال! سيتم توجيهك إلى المنتديات قريبًا.</p>
+  </div>
+
+  <!-- زر جلب بيانات المنتديات -->
+  <button class="button" onclick="fetchForumData()">جلب بيانات المنتديات</button>
+
+  <!-- عرض نتائج المنتديات في جدول -->
+  <div class="content">
+    <h2>عرض نتائج المنتديات:</h2>
+    <table id="resultTable">
+      <thead>
+        <tr>
+          <th>اسم المنتدى</th>
+          <th>الموضوع</th>
+          <th>الرابط</th>
+        </tr>
+      </thead>
+      <tbody>
+        <!-- سيتم ملء البيانات هنا عبر JavaScript -->
+      </tbody>
+    </table>
+  </div>
+
+  <!-- عرض الأخبار المتحركة -->
+  <div class="news-container">
+    <p>آخر الأخبار: تعلم بايثون الآن مع الدورات المجانية! تصفح منتديات البرمجة لأحدث الأسئلة والحلول...</p>
+    
+  </div>
+
+  <!-- روابط المصادر التعليمية -->
+  <div class="link-section">
+    <a href="https://www.python.org/doc/" target="_blank">دورة بايثون مجانية</a>
+    <a href="https://www.w3schools.com/" target="_blank">دورات HTML/CSS/JavaScript</a>
+    <a href="https://learn.microsoft.com/en-us/dotnet/csharp/" target="_blank">دورة C# من مايكروسوفت</a>
+    <a href="https://www.google.com/search?q=programming+forums" target="_blank">منتديات البرمجة الأخرى</a>
+  </div>
+
+  <script>
+    // دالة لجلب بيانات المنتديات وعرضها في الجدول
+    function fetchForumData() {
+      const forums = [
+        { name: 'Stack Overflow', topic: 'سؤال حول بايثون', link: 'https://stackoverflow.com/questions/tagged/python' },
+        { name: 'Reddit - Learn Programming', topic: 'مشكلة في HTML', link: 'https://www.reddit.com/r/learnprogramming/' },
+        { name: 'C# Corner', topic: 'استفسار حول C#', link: 'https://www.c-sharpcorner.com/' },
+        { name: 'GeeksforGeeks', topic: 'أخبار البرمجة', link: 'https://www.geeksforgeeks.org/' },
+        { name: 'FreeCodeCamp', topic: 'دروس في JavaScript', link: 'https://www.freecodecamp.org/' },
+        { name: 'StackExchange', topic: 'حل مشكلة في PHP', link: 'https://stackexchange.com/' },
+        { name: 'CodeProject', topic: 'مشكلة في C++', link: 'https://www.codeproject.com/' },
+        { name: 'Dev.to', topic: 'مناقشة حول HTML5', link: 'https://dev.to/' },
+        { name: 'W3Schools Forum', topic: 'دروس CSS', link: 'https://forum.w3schools.com/' },
+        { name: 'Java Forums', topic: 'أسئلة حول جافا', link: 'https://www.java-forums.org/' },
+        { name: 'Python Forum', topic: 'استفسارات بايثون', link: 'https://www.python-forum.io/' },
+        { name: 'CodinGame', topic: 'ممارسة البرمجة عبر الألعاب', link: 'https://www.codingame.com/' },
+        { name: 'HackerRank', topic: 'مسائل في بايثون', link: 'https://www.hackerrank.com/domains/tutorials/10-days-of-python' },
+        { name: 'LeetCode', topic: 'حل مشكلة في بايثون', link: 'https://leetcode.com/' },
+        { name: 'Exercism', topic: 'تمارين بايثون', link: 'https://exercism.io/tracks/python' },
+        { name: 'SoloLearn', topic: 'دورات بايثون', link: 'https://www.sololearn.com/Course/Python/' },
+        { name: 'PyBites', topic: 'تمارين بايثون تفاعلية', link: 'https://codechalleng.es/courses/python/' },
+        { name: 'GitHub Discussions', topic: 'مناقشات بايثون', link: 'https://github.com/' }
+      ];
+
+      const table = document.getElementById('resultTable').getElementsByTagName('tbody')[0];
+      forums.forEach(forum => {
+        const row = table.insertRow();
+        row.insertCell(0).innerText = forum.name;
+        row.insertCell(1).innerText = forum.topic;
+        const linkCell = row.insertCell(2);
+        const link = document.createElement('a');
+        link.href = forum.link;
+        link.target = '_blank';
+        link.innerText = 'رابط المنتدى';
+        linkCell.appendChild(link);
+      });
+    }
+
+    // دالة للبحث في جوجل
+    function searchGoogle() {
+      const query = document.getElementById('searchQuery').value;
+      const searchUrl = `https://www.google.com/search?q=${encodeURIComponent(query)}+برمجة`;
+      window.open(searchUrl, '_blank');
+    }
+
+    // دالة لإظهار الرسالة بعد السؤال
+    function showMessage() {
+      const messageBox = document.getElementById('messageBox');
+      messageBox.style.display = 'block';
+      setTimeout(() => {
+        messageBox.style.display = 'none';
+      }, 5000);
+    }
+  </script>
+<h2>أفضل قنوات يوتيوب للبرمجة</h2>
+<table>
+    <tr><th>القناة</th><th>الرابط</th></tr>
+    <tr><td>Traversy Media</td><td><a href="https://www.youtube.com/c/TraversyMedia" target="_blank">مشاهدة</a></td></tr>
+    <tr><td>Academind</td><td><a href="https://www.youtube.com/c/Academind" target="_blank">مشاهدة</a></td></tr>
+    <tr><td>freeCodeCamp.org</td><td><a href="https://www.youtube.com/c/Freecodecamp" target="_blank">مشاهدة</a></td></tr>
+    <tr><td>The Net Ninja</td><td><a href="https://www.youtube.com/c/TheNetNinja" target="_blank">مشاهدة</a></td></tr>
+    <tr><td>Programming with Mosh</td><td><a href="https://www.youtube.com/c/programmingwithmosh" target="_blank">مشاهدة</a></td></tr>
+    <tr><td>Elzero Web School</td><td><a href="https://www.youtube.com/watch?v=LdJbP0NbFRw" target="_blank">مشاهدة</a></td></tr>
+    <tr><td>قناة عربية أخرى</td><td><a href="https://www.youtube.com/watch?v=XhQsG1YRvOg&t=111s" target="_blank">مشاهدة</a></td></tr>
+    <table border="1">
+      <tr>
+          <th>اسم القناة</th>
+          <th>رابط المشاهدة</th>
+      </tr>
+      <tr>
+          <td>أفضل 10 قنوات لتعلم البرمجة</td>
+          <td><a href="https://www.youtube.com/watch?v=CLrxIwaNUrw" target="_blank">مشاهدة</a></td>
+      </tr>
+      <tr>
+          <td>Elzero تعلم لغة Python بشكل مبتديء</td>
+          <td><a href="https://www.youtube.com/watch?v=mvZHDpCHphk&list=PLDoPjvoNmBAyE_gei5d18qkfIe-Z8mocs" target="_blank">مشاهدة</a></td>
+      </tr>
+      <tr>
+          <td>عبدالله عيد جافا JAVA </td>
+          <td><a href="https://www.youtube.com/watch?v=3QC6Zpz3As4&list=PL28DDB2DCF87BEE43" target="_blank">مشاهدة</a></td>
+      </tr>
+      <tr>
+          <td>كورس مقدمة عن أساسيات البرمجة للمبتدئين</td>
+          <td><a href="https://www.youtube.com/watch?v=06h470AiBZ4" target="_blank">مشاهدة</a></td>
+      </tr>
+      <tr>
+          <td>مدخلك إلى عالم البرمجة بتعريفها وأنواعها ومجالاتها وكيف تبدأ تتعلمها</td>
+          <td><a href="https://www.youtube.com/watch?v=S773UjJWlug&t=1925s" target="_blank">مشاهدة</a></td>
+      </tr>
+      <tr>
+          <td>الخوارزميات : سر النجاح في عالم البرمجة والذكاء الاصطناعي  </td>
+          <td><a href="https://www.youtube.com/watch?v=7gvn1U4714g" target="_blank">مشاهدة</a></td>
+      </tr>
+  </table>
+  
+</table>
+
+
+<h1>مصادر لتعلم اللغة الإنجليزية</h1>
+<table>
+    <tr>
+        <th>المصدر</th>
+        <th>الرابط</th>
+    </tr>
+    <tr>
+        <td>BBC Learning English</td>
+        <td><a href="https://www.bbc.co.uk/learningenglish" target="_blank">زيارة الموقع</a></td>
+    </tr>
+    <tr>
+        <td>Duolingo</td>
+        <td><a href="https://www.duolingo.com/" target="_blank">زيارة الموقع</a></td>
+    </tr>
+    <tr>
+        <td>EngVid</td>
+        <td><a href="https://www.engvid.com/" target="_blank">زيارة الموقع</a></td>
+    </tr>
+    <tr>
+        <td>English Club</td>
+        <td><a href="https://www.englishclub.com/" target="_blank">زيارة الموقع</a></td>
+    </tr>
+    <tr>
+        <td>Cambridge English</td>
+        <td><a href="https://www.cambridgeenglish.org/learning-english/" target="_blank">زيارة الموقع</a></td>
+    </tr>
+</table>
+<h2>قنوات لتعلم الكمبيوتر وأساسياته</h2>
+<table>
+    <tr><th>القناة</th><th>الرابط</th></tr>
+    <tr><td>Computerphile</td><td><a href="https://www.youtube.com/c/Computerphile" target="_blank">مشاهدة</a></td></tr>
+    <tr><td>Techquickie</td><td><a href="https://www.youtube.com/c/Techquickie" target="_blank">مشاهدة</a></td></tr>
+    <tr><td>CrashCourse Computer Science</td><td><a href="https://www.youtube.com/playlist?list=PL8dPuuaLjXtOfse2ncvffeelTrqvhrz8H" target="_blank">مشاهدة</a></td></tr>
+</table>
+  
+<h2>أفضل 10 مهندسين برمجة</h2>
+<table>
+    <tr><th>الاسم</th><th>الاختصاص</th></tr>
+    <tr><td>لينوس تورفالدس</td><td>لينوكس</td></tr>
+    <tr><td>دنيس ريتشي</td><td>C ويونكس</td></tr>
+    <tr><td>غويدو فان روسم</td><td>بايثون</td></tr>
+</table>
+<!DOCTYPE html>
+<html lang="ar">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>شريط أخبار التقنية</title>
+    <style>
+        .news-container {
+            width: 100%;
+            background-color: #222;
+            color: white;
+            padding: 10px 0;
+            font-size: 18px;
+            font-weight: bold;
+            text-align: center;
+        }
+
+        .scrolling-news-container {
+            width: 100%;
+            overflow: hidden;
+            background-color: #111;
+            color: white;
+            padding: 10px 0;
+            white-space: nowrap;
+            box-sizing: border-box;
+        }
+
+        .news-content {
+            display: inline-block;
+            animation: scrollNews 40s linear infinite;
+        }
+
+        .news-item {
+            display: inline;
+            margin: 0 30px;
+        }
+
+        .news-item a {
+            color: #00d4ff;
+            text-decoration: none;
+        }
+
+        @keyframes scrollNews {
+            from {
+                transform: translateX(100%);
+            }
+            to {
+                transform: translateX(-100%);
+            }
+        }
+    </style>
+</head>
+<body>
+
+    <!-- الخبر الثابت -->
+    <div class="news-container">
+        <p>آخر الأخبار: تعلم كل شيء الآن مع الدورات المجانية! تصفح منتديات البرمجة لأحدث الأسئلة والحلول...</p>
+    </div>
+
+    <!-- الأخبار المتحركة -->
+    <div class="scrolling-news-container">
+        <div class="news-content">
+            <span class="news-item"><a href="https://aitnews.com/latest-it-news/" target="_blank">أمازون تلغي ميزة تنزيل الكتب الإلكترونية احتياطيًا</a></span>
+            <span class="news-item"><a href="https://aitnews.com/latest-it-news/" target="_blank">Perplexity تطلق أداة Deep Research للبحث العميق</a></span>
+            <span class="news-item"><a href="https://aitnews.com/latest-it-news/" target="_blank">ريديت تعتزم إطلاق "المنتديات المأجورة" هذا العام</a></span>
+            <span class="news-item"><a href="https://aitnews.com/latest-it-news/" target="_blank">جوجل تعطّل نظام اكتشاف الزلازل في البرازيل بسبب إنذارٍ كاذب</a></span>
+            <span class="news-item"><a href="https://www.unlimit-tech.com/" target="_blank">تسريب صور جديدة لهاتف Samsung Galaxy A26</a></span>
+            <span class="news-item"><a href="https://www.unlimit-tech.com/" target="_blank">سلسلة Nothing Phone (3a) ستعمل بمعالجات Snapdragon</a></span>
+            <span class="news-item"><a href="https://www.aljazeera.net/tech/" target="_blank">سام ألتمان يخطط لدمج جميع نماذج الذكاء الاصطناعي</a></span>
+            <span class="news-item"><a href="https://www.akhbaar24.com/%D8%AA%D9%82%D9%86%D9%8A%D8%A9" target="_blank">"ليب 2025".. نافذة على مستقبل الذكاء الاصطناعي</a></span>
+            <span class="news-item"><a href="https://arabic.rt.com/tags/new_tech/" target="_blank">أبرز ما يميز ساعة Redmi Watch 5 الذكية</a></span>
+            <span class="news-item"><a href="https://www.technologianews.com/category/tech-news/" target="_blank">آبل تطلق تحديثات أمنية جديدة لأجهزة iPhone و Mac</a></span>
+            <span class="news-item"><a href="https://www.technologianews.com/category/tech-news/" target="_blank">مايكروسوفت تعزز أمان Windows 11 بميزات جديدة</a></span>
+            <span class="news-item"><a href="https://www.technologianews.com/category/tech-news/" target="_blank">إيلون ماسك يكشف عن تقنيات جديدة في تيسلا</a></span>
+            <span class="news-item"><a href="https://www.technologianews.com/category/tech-news/" target="_blank">جوجل تطرح ميزات متطورة في مساعدها الذكي</a></span>
+            <span class="news-item"><a href="https://www.technologianews.com/category/tech-news/" target="_blank">باكستان تخطط لإرسال مركبة روبوتية إلى القمر</a></span>
+            <span class="news-item"><a href="https://www.technologianews.com/category/tech-news/" target="_blank">"HMD" توقف إنتاج هواتف نوكيا الذكية</a></span>
+            <span class="news-item"><a href="https://www.technologianews.com/category/tech-news/" target="_blank">Nintendo تعلن عن منصتها الجديدة لمحبي الألعاب الإلكترونية</a></span>
+        </div>
+    </div>
+
+</body>
+</html>
+
+<div class="link-section">
+    <h2>روابط مفيدة</h2>
+    <a href="https://code.visualstudio.com/" target="_blank">فيجوال ستوديو كود</a>
+    <a href="https://chat.openai.com/" target="_blank">ChatGPT</a>
+</div>
+<h2>دورات جول20</h2>
+<table>
+    <tr><th>الدورة</th><th>الرابط</th></tr>
+    <tr><td>جميع دورات جول20</td><td><a href="https://www.udemy.com/user/jul20" target="_blank">مشاهدة</a></td></tr>
+</table>
+
+<h2>30 دورة مختلفة في مجالات الحوسبة</h2>
+<ul>
+    <li><a href="https://cs50.harvard.edu/">دورة مقدمة في علوم الحاسوب</a></li>
+    <li><a href="https://www.udacity.com/course/introduction-to-python--ud1110">دورة أساسيات البرمجة بلغة بايثون</a></li>
+    <li><a href="https://www.udemy.com/course/the-complete-javascript-course/">دورة تطوير تطبيقات الويب باستخدام جافا سكريبت</a></li>
+    <li><a href="https://www.coursera.org/specializations/data-science-python">دورة تحليل البيانات باستخدام بايثون</a></li>
+    <li><a href="https://www.deeplearning.ai/">دورة الذكاء الاصطناعي وتعلم الآلة</a></li>
+    <li><a href="https://www.coursera.org/specializations/cyber-security">دورة أمن المعلومات وحماية الأنظمة</a></li>
+    <li><a href="https://www.coursera.org/specializations/computer-networking">دورة الشبكات وأساسيات الإنترنت</a></li>
+    <li><a href="https://developer.android.com/courses">دورة تطوير تطبيقات الأندرويد</a></li>
+    <li><a href="https://developer.apple.com/learn/curriculum/">دورة تطوير تطبيقات iOS</a></li>
+    <li><a href="https://www.udacity.com/course/java-programming-basics--ud282">دورة البرمجة الشيئية بلغة جافا</a></li>
+    <li><a href="https://www.datacamp.com/courses/sql-fundamentals">دورة تصميم قواعد البيانات باستخدام SQL</a></li>
+    <li><a href="https://www.udemy.com/course/unitycourse/">دورة تطوير الألعاب باستخدام Unity</a></li>
+    <li><a href="https://aws.amazon.com/training/">دورة الحوسبة السحابية و AWS</a></li>
+    <li><a href="https://www.udemy.com/course/docker-mastery/">دورة DevOps وأتمتة العمليات</a></li>
+    <li><a href="https://www.coursera.org/learn/software-engineering">دورة هندسة البرمجيات وأساليب التطوير</a></li>
+    <li><a href="https://www.udacity.com/course/react-nanodegree--nd019">دورة تطوير تطبيقات الويب باستخدام React</a></li>
+    <li><a href="https://www.udemy.com/course/advanced-c-programming/">دورة البرمجة المتقدمة بلغة C++</a></li>
+    <li><a href="https://www.tensorflow.org/tutorials">دورة الذكاء الاصطناعي باستخدام TensorFlow</a></li>
+    <li><a href="https://www.codecademy.com/learn/learn-git">دورة تعلم Git وإدارة الإصدارات</a></li>
+    <li><a href="https://www.freecodecamp.org/">دورة تطوير واجهات المستخدم باستخدام CSS و HTML</a></li>
+    <li><a href="https://www.udacity.com/course/big-data-analytics--ud919">دورة تحليل البيانات الضخمة باستخدام Hadoop</a></li>
+    <li><a href="https://www.coursera.org/learn/intro-cyber-security">دورة مقدمة في الأمن السيبراني</a></li>
+</ul>
+
+<h2>أفضل 20 موقعًا لتعليم البرمجة للأطفال</h2>
+<ul>
+    <li><a href="https://scratch.mit.edu/">Scratch</a></li>
+    <li><a href="https://code.org/">Code.org</a></li>
+    <li><a href="https://www.khanacademy.org/computing">Khan Academy</a></li>
+    <li><a href="https://www.codecademy.com/">Codecademy</a></li>
+    <li><a href="https://www.tinkercad.com/">Tinkercad</a></li>
+    <li><a href="https://www.alice.org/">Alice</a></li>
+    <li><a href="https://lightbot.com/">LightBot</a></li>
+    <li><a href="https://csunplugged.org/en/">CS Unplugged</a></li>
+    <li><a href="https://www.tynker.com/">Tynker</a></li>
+    <li><a href="https://www.codemonkey.com/">CodeMonkey</a></li>
+    <li><a href="https://www.bitsbox.com/">Bitsbox</a></li>
+    <li><a href="https://www.hourofcode.com/">Hour of Code</a></li>
+    <li><a href="https://www.blockly.games/">Blockly Games</a></li>
+    <li><a href="https://www.stencyl.com/">Stencyl</a></li>
+    <li><a href="https://www.roblox.com/create">Roblox Studio</a></li>
+    <li><a href="https://www.makecode.com/">Microsoft MakeCode</a></li>
+    <li><a href="https://www.codingame.com/">CodinGame</a></li>
+    <li><a href="https://www.cs-first.com/">CS First by Google</a></li>
+    <li><a href="https://www.playcodemonkey.com/">Play CodeMonkey</a></li>
+    <li><a href="https://www.udemy.com/topic/kids-coding/">Udemy Kids Coding</a></li>
+</ul>
+
+<h1>  </h1>
+<div style="display: flex; align-items: center;">
+
+    <pre id="code-snippet" style="background-color: #363734; color: #17e300; padding: 10px; border-radius: 5px; font-family: monospace;">function greet() {
+    console.log("مرحبًا بالعالم!");
+}</pre>
+</div>
+
+<script>
+    const snippets = [
+        "console.log('Hello, World!');",
+        "let x = 10;\nlet y = 20;\nconsole.log(x + y);",
+        "function sayHello(name) {\n    return 'Hello ' + name;\n}"
+    ];
+    let index = 0;
+    setInterval(() => {
+        document.getElementById("code-snippet").textContent = snippets[index];
+        index = (index + 1) % snippets.length;
+    }, 3000);
+</script>
+<h2>قائمة المهام اليومية و القطاعات التعليمية السعودية و نماذج الشركات الخاصة</h2>
+<ul>
+
+
+
+
+        <div class="container">
+        <div class="section header"> مشروع طويق و التحول الرقمي في المملكة العربية السعودية فرصة ذهبية للكوادر  في السنوات العشر القادمة     </div>
+
+        <div class="section">
+            <p>
+                مع تسارع التحول الرقمي في المملكة العربية السعودية، تزداد الحاجة إلى كوادر متمكنة في مجال البرمجة وتقنية المعلومات
+                تسعى المملكة، من خلال رؤية 2030، إلى تنويع اقتصادها وتقليل الاعتماد على النفط، مما يتطلب تطوير قطاعات جديدة تعتمد بشكل كبير على التكنولوجيا والبرمجيات.
+            </p>
+        </div>
+
+        <div class="section header">أفضل مراكز التدريب في السعودية</div>
+
+        <div class="section link-box">
+            <a href="https://tuwaiq.edu.sa/" target="_blank">أكاديمية طويق</a>
+        </div>
+
+        <div class="section link-box">
+            <a href="https://sda.edu.sa/" target="_blank">الأكاديمية السعودية الرقمية</a>
+        </div>
+
+        <div class="section link-box">
+            <a href="https://sla.edu.sa/" target="_blank">الأكاديمية السعودية اللوجستية</a>
+        </div>
+
+        <div class="section link-box">
+            <a href="https://www.rpi.edu.sa/" target="_blank">معهد الرياض للتقنية</a>
+        </div>
+
+    
+        <div class="section link-box">
+            <a href="https://hipf.edu.sa/" target="_blank">المعهد العالي للصناعات البلاستيكية</a>
+        </div>
+
+        <div class="section link-box">
+            <a href="https://www.npa.edu.sa/" target="_blank">الأكاديمية الوطنية للطاقة</a>
+        </div>
+
+        <div class="section link-box">
+            <a href="https://smp.edu.sa/" target="_blank">المعهد السعودي التقني للتعدين</a>
+        </div>
+
+        <div class="section link-box">
+            <a href="https://www.nbc.edu.sa/" target="_blank">الأكاديمية الوطنية للبناء</a>
+        </div>
+
+    </div>
+
+    <li><a href="https://sda.edu.sa/">الأكاديمية السعودية الرقمية</a></li>
+    <li><a href="https://sla.edu.sa/">الأكاديمية السعودية اللوجستية</a></li>
+    <li><a href="https://www.rpi.edu.sa/">معهد الرياض للتقنية</a></li>
+    <li><a href="https://hipf.edu.sa/">المعهد العالي للصناعات البلاستيكية</a></li>
+    <li><a href="https://www.npa.edu.sa/">الأكاديمية الوطنية للطاقة</a></li>
+    <li><a href="https://smp.edu.sa/">المعهد السعودي التقني للتعدين</a></li>
+</ul>
+
+
+   <li><a href="https://grow.google/certificates/">دورات مجانية من جوجل</a></li>
+   <ul>
+    <li><a href="https://chat.google.com/">Google Chat - دردشة جوجل</a></li>
+    <li><a href="https://deepmind.google/">Google DeepMind - الذكاء الاصطناعي</a></li>
+    <li><a href="https://ai.google/tools/">أحدث نماذج الذكاء الاصطناعي من جوجل</a></li>
+</ul>
+
+   <li><a href="https://learn.microsoft.com/en-us/training/">أفضل 10 دورات مجانية من مايكروسوفت</a></li>
+   <li><a href="https://aistudio.google.com/prompts/new_chat">aistudio.google.com</a></li>
+   <li><a href="file:///F:/%D8%A7%D9%84%D8%A8%D8%B1%D8%A7%D9%85%D8%AC%20%D8%A7%D9%84%D8%AE%D8%A7%D8%B5%D8%A9/%D8%A1%D8%A7%D8%AF%D9%85/MAT-main/index.html">مسارات تعليمية</a></li>
+   <li><a href="https://samalmukhtar.github.io/ksa/">أكاديمية البرمجة والدورات</a></li>
+</ul>
+   <li><a href="https://samalmukhtar.github.io/BEGSCOOLE/">المدرسة الكبرى</a></li>
+   <li><a href="https://miro.com/">منصة ميرو</a></li>
+   <li><a href="https://teams.microsoft.com/">جوجل تيمز</a></li>
+   <li><a href="https://samalmukhtar.github.io/MAT/">قائمةالمهام  و المواقع </a></li>  
+
+</ul>
+<ul>
+
+
+<style>
+@keyframes moving-text {
+    0% { transform: translateX(0); }
+    50% { transform: translateX(20px); }
+    100% { transform: translateX(0); }
+}
+
+.animated-text {
+    display: inline-block;
+    font-size: 24px;
+    font-weight: bold;
+    animation: moving-text 3s infinite;
+}
+</style>
+<div class="container">
+    <!-- قسم تطوير الواجهات الأمامية -->
+    <div class="section">
+        <h2> تطوير الواجهات الأمامية</h2>
+        <table>
+            <thead>
+                <tr>
+                    <th>المسار</th>
+                    <th>الرابط</th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr>
+                    <td>HTML & CSS متقدم (MDN Web Docs)</td>
+                    <td><a href="https://developer.mozilla.org/" target="_blank">الانتقال للمسار</a></td>
+                </tr>
+                <tr>
+                    <td>JavaScript حديث (ES6+)</td>
+                    <td><a href="https://javascript.info/" target="_blank">الانتقال للمسار</a></td>
+                </tr>
+                <tr>
+                    <td>React.js من الصفر إلى الاحتراف</td>
+                    <td><a href="https://react.dev/learn" target="_blank">الانتقال للمسار</a></td>
+                </tr>
+                <!-- يمكنك إضافة المزيد من الصفوف بنفس النمط -->
+            </tbody>
+        </table>
+    </div>
+
+    <!-- قسم البرمجة الخلفية -->
+    <div class="section">
+        <h2>🔧 البرمجة الخلفية</h2>
+        <table>
+            <thead>
+                <tr>
+                    <th>المسار</th>
+                    <th>الرابط</th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr>
+                    <td>Node.js مع Express</td>
+                    <td><a href="https://nodejs.org/en/docs/" target="_blank">الانتقال للمسار</a></td>
+                </tr>
+                <tr>
+                    <td>Python مع Django</td>
+                    <td><a href="https://docs.djangoproject.com/" target="_blank">الانتقال للمسار</a></td>
+                </tr>
+                <tr>
+                    <td>PHP مع Laravel</td>
+                    <td><a href="https://laravel.com/docs" target="_blank">الانتقال للمسار</a></td>
+                </tr>
+                <!-- إضافة المزيد -->
+            </tbody>
+        </table>
+    </div>
+
+    <!-- قسم أدوات المطور -->
+    <div class="section">
+        <h2>⚙️ أدوات المطور</h2>
+        <table>
+            <thead>
+                <tr>
+                    <th>المسار</th>
+                    <th>الرابط</th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr>
+                    <td>Git & GitHub متقدم</td>
+                    <td><a href="https://git-scm.com/doc" target="_blank">الانتقال للمسار</a></td>
+                </tr>
+                <tr>
+                    <td>Docker للمحترفين</td>
+                    <td><a href="https://docs.docker.com/" target="_blank">الانتقال للمسار</a></td>
+                </tr>
+                <tr>
+                    <td>أساسيات Linux للنظام</td>
+                    <td><a href="https://linuxjourney.com/" target="_blank">الانتقال للمسار</a></td>
+                </tr>
+                <!-- إضافة المزيد -->
+            </tbody>
+        </table>
+    </div>
+</div>
+<div class="animated-text">ANONYMOUS</div>
+
+<h2>قسم الاستفسارات</h2>
+<p>إذا كان لديك أي استفسار حول البرمجة أو الكمبيوتر، لا تتردد في طرحه هنا!</p>
+
+<footer>
+    <p>كل الحقوق محفوظة - مفتوح المصدر</p>
+    <p>المعلم الأكبر - تم صناعته بشهادة GPT 2025</p>
+</footer>
+
+</body>
+</html>
